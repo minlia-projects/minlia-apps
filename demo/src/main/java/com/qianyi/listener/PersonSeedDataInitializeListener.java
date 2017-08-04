@@ -51,8 +51,9 @@ public class PersonSeedDataInitializeListener implements ApplicationListener<Con
 // This will use constructor with minimum arguments and
 // then setters to populate POJO
 
-        for (int i = 0; i < 50; i++) {
-            Person entity = factory.manufacturePojoWithFullData(Person.class);
+        for (int i = 0; i < 2; i++) {
+//            Person entity = factory.manufacturePojoWithFullData(Person.class);
+            Person entity=new Person();
             personRepository.save(entity);
 
         }

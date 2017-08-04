@@ -1,5 +1,6 @@
 package com.qianyi.body;
 
+
 import com.minlia.cloud.query.body.SearchRequestBody;
 
 /**

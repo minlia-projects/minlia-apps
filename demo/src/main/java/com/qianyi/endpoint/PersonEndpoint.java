@@ -4,9 +4,12 @@ import com.minlia.cloud.body.StatefulBody;
 import com.minlia.cloud.body.impl.SuccessResponseBody;
 import com.minlia.cloud.body.query.QueryOperator;
 import com.minlia.cloud.endpoint.AbstractApiEndpoint;
-import com.minlia.cloud.query.body.ApiSearchRequestBody;
-import com.minlia.cloud.query.condition.QueryCondition;
+import com.minlia.cloud.query.specification.batis.BatisSpecifications;
+import com.minlia.cloud.query.specification.batis.QueryCondition;
+import com.minlia.cloud.query.specification.batis.SpecificationDetail;
+import com.minlia.cloud.query.specification.batis.body.BatisApiSearchRequestBody;
 import com.minlia.cloud.query.specification.jpa.JpaSpecifications;
+import com.minlia.cloud.query.specification.jpa.body.JpaApiSearchRequestBody;
 import com.qianyi.body.PersonSearchRequestBody;
 import com.qianyi.dao.PersonDao;
 import com.qianyi.domain.Person;
@@ -30,12 +33,89 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "用户", value = "用户", description = "用户")
 public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, Long> {
 
+
+    @Autowired
+    PersonService personService;
+
+    @PostMapping("daoFind")
+    public StatefulBody daoFind(@PageableDefault Pageable pageable, @RequestBody BatisApiSearchRequestBody<PersonSearchRequestBody> body) {
+        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "%x%").setAnalytiColumn(true) );
+        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "%x%").setAnalytiColumn(true) );
+
+//        Page<Person> page=personDao.findAll(batisSpecifications.buildSpecification(body),pageable);
+
+//        personService.findPageByBody(body,pageable);
+        SpecificationDetail<Person> spec = BatisSpecifications.bySearchQueryCondition(
+                body.getConditions(),
+//                QueryCondition.ne(Person.F_STATUS, User.FLAG_DELETE).setAnalytiColumnPrefix("a"),
+                QueryCondition.ne("id", "1").setAnalytiColumn(true));
+//        spec.orAll(orQueryConditions);
+
+        Page<Person> list=personService.findBasePage(pageable,spec,true);
+
+
+//        Person person=personDao.findById(1l);
+////        log.debug("PersonDao {}",personDao.findById(1l));
+//        log.debug("PersonService {}",personService);
+//        log.debug("List {}",list);
+        return SuccessResponseBody.builder().payload(list).build();
+    }
+
+
+    @PostMapping("jpaFind")
+    public StatefulBody jpaFind(@PageableDefault Pageable pageable, @RequestBody JpaApiSearchRequestBody<PersonSearchRequestBody> body) {
+//        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "x"));
+//        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "x"));
+        body.getConditions().add(new com.minlia.cloud.query.specification.jpa.QueryCondition("category.name", QueryOperator.eq, ""));
+        Page<Person> page = personRepository.findAll(jpaSpecifications.buildSpecification(body), pageable);
+        return SuccessResponseBody.builder().payload(page).build();
+    }
+
+
+    @PostMapping("/misc")
+    public StatefulBody misc(@PageableDefault Pageable pageable, @RequestBody com.minlia.cloud.query.specification.batis.body.BatisApiSearchRequestBody<PersonSearchRequestBody> body) {
+
+//        Person person = new Person();
+//        person.setName("xxxx");
+//        person.setEmail("abc.xxx@dkjfd.com");
+//        //使用jpa保存
+//        personRepository.save(person);
+//
+//
+//        //使用mybatis 查询
+//        Person found = personDao.findById(1l);
+//
+//
+//
+//        log.debug("PERSON_DAO {}", personDao);
+//        log.debug("PERSON_REPOSITORY {}", personRepository);
+        return SuccessResponseBody.builder().build();
+    }
+
+
+
+
+
+
+    @PostMapping(value = "delete/{id}")
+    public StatefulBody delete(@PathVariable Long id) {
+        personRepository.delete(id);
+//        personDao.deleteById(id);
+        return SuccessResponseBody.builder().payload(null).build();
+    }
+
+
+
+
+
     public PersonEndpoint() {
         super();
     }
 
     @Autowired
     JpaSpecifications jpaSpecifications;
+    @Autowired
+    BatisSpecifications batisSpecifications;
 
 
     @Autowired
@@ -44,8 +124,6 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
 
     @Autowired
     PersonRepository personRepository;
-
-
 
 
     @ApiOperation(
@@ -63,43 +141,6 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
     }
 
 
-    @PostMapping
-    public StatefulBody test(@PageableDefault Pageable pageable, @RequestBody ApiSearchRequestBody<PersonSearchRequestBody> body) {
-
-        Person person = new Person();
-        person.setName("xxxx");
-        person.setEmail("abc.xxx@dkjfd.com");
-        //使用jpa保存
-        personRepository.save(person);
 
 
-        //使用mybatis 查询
-        Person found = personDao.findById(1l);
-
-
-        log.debug("PERSON_DAO {}", personDao);
-        log.debug("PERSON_REPOSITORY {}", personRepository);
-
-
-//        ApiSearchRequestBody<PersonSearchRequestBody> body = new ApiSearchRequestBody<>();
-        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "x"));
-        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "x"));
-//        List pageableFound=personDao.findAll(querySpecifications.buildSpecification(body));
-
-
-        Page<Person> page = personRepository.findAll(jpaSpecifications.buildSpecification(body), pageable);
-//        for (Person p : page.getContent()) {
-//            log.debug("getEmail {}", p.getEmail());
-//            log.debug("getName {}", p.getName());
-//        }
-        return SuccessResponseBody.builder().payload(page).build();
-    }
-
-
-    @PostMapping(value = "delete/{id}")
-    public StatefulBody delete(@PathVariable Long id) {
-        personRepository.delete(id);
-//        personDao.deleteById(id);
-        return SuccessResponseBody.builder().payload(null).build();
-    }
 }

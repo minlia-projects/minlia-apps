@@ -172,6 +172,7 @@
     <logger name="sun.rmi" level="WARN"/>
     <logger name="liquibase" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
+    <logger name="uk.co.jemos.podam.api" level="ERROR"/>
 
     <logger name="jdbc.connection" level="ERROR"/>
     <logger name="jdbc.resultset" level="ERROR"/>
