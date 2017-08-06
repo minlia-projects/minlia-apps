@@ -51,14 +51,18 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
                 QueryCondition.ne("id", 1l));
 //        spec.orAll(orQueryConditions);
 
-        Page<Person> list = personService.findBasePage(pageable, spec, false, "selectPage", "countPage");
+
+
+
+//
+//        Page<Person> list = personService.findBasePage(pageable, spec, false, "selectPage", "countPage");
 
 
 //        Person person=personDao.findById(1l);
 ////        log.debug("PersonDao {}",personDao.findById(1l));
 //        log.debug("PersonService {}",personService);
 //        log.debug("List {}",list);
-        return SuccessResponseBody.builder().payload(list).build();
+        return SuccessResponseBody.builder().build();
     }
 
 
