@@ -39,8 +39,8 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
 
     @PostMapping("daoFind")
     public StatefulBody daoFind(@PageableDefault Pageable pageable, @RequestBody BatisApiSearchRequestBody<PersonSearchRequestBody> body) {
-        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "%x%").setAnalytiColumn(true) );
-        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "%x%").setAnalytiColumn(true) );
+        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "%x%"));
+        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "%x%"));
 
 //        Page<Person> page=personDao.findAll(batisSpecifications.buildSpecification(body),pageable);
 
@@ -48,10 +48,10 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
         SpecificationDetail<Person> spec = BatisSpecifications.bySearchQueryCondition(
                 body.getConditions(),
 //                QueryCondition.ne(Person.F_STATUS, User.FLAG_DELETE).setAnalytiColumnPrefix("a"),
-                QueryCondition.ne("id", "1").setAnalytiColumn(true));
+                QueryCondition.ne("id", 1l));
 //        spec.orAll(orQueryConditions);
 
-        Page<Person> list=personService.findBasePage(pageable,spec,true);
+        Page<Person> list = personService.findBasePage(pageable, spec, false, "selectPage", "countPage");
 
 
 //        Person person=personDao.findById(1l);
@@ -93,19 +93,12 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
     }
 
 
-
-
-
-
     @PostMapping(value = "delete/{id}")
     public StatefulBody delete(@PathVariable Long id) {
         personRepository.delete(id);
 //        personDao.deleteById(id);
         return SuccessResponseBody.builder().payload(null).build();
     }
-
-
-
 
 
     public PersonEndpoint() {
@@ -134,13 +127,11 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
     )
     @GetMapping(value = "/{id}")
     public StatefulBody findOne(@PathVariable Long id) {
-        Person found = personDao.findById(id);
+//        Person found = personDao.findAll()
 
-        return SuccessResponseBody.builder().payload(found).build();
+        return SuccessResponseBody.builder().build();
 //        return super.findOne(id);
     }
-
-
 
 
 }

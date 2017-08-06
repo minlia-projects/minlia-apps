@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.minlia.cloud.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.mybatis.annotations.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,19 +22,19 @@ import java.util.List;
 @Setter
 
 //BATIS
-@org.springframework.data.mybatis.annotations.Entity(name = "person")
+//@org.springframework.data.mybatis.annotations.Entity(name = "person")
 public class Person  extends AbstractEntity{
 
     @JsonProperty
-    @Column(name = "name")
+//    @Column(name = "name")
     private String name;
 
     @JsonProperty
-    @Column(name = "email")
+//    @Column(name = "email")
     private String email;
 
     @JsonProperty
-    @Column(name = "people_id")
+//    @Column(name = "people_id")
     private Long peopleId;
 
 //    @OneToOne
@@ -43,7 +42,7 @@ public class Person  extends AbstractEntity{
 //    private Category category;
 
 
-    @org.springframework.data.annotation.Transient
+//    @org.springframework.data.annotation.Transient
     @Transient
     private List<Person> people;
 
