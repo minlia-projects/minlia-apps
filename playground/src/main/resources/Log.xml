@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianyi.domain.Person">
+    <sql id="TABLE_NAME">person</sql>
+    <sql id="SELECT_CONDITION_INNER"></sql>
+    <resultMap id="ResultMap" type="com.qianyi.domain.Person">
+        <id property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="email" column="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="name" column="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="peopleId" column="peopleId" javaType="java.lang.Long" jdbcType="BIGINT"/>
+    </resultMap>
+    <insert id="_insert" parameterType="com.qianyi.domain.Person" lang="XML" keyProperty="id" keyColumn="id"><selectKey
+            keyProperty="id" resultType="java.lang.Long" order="AFTER">select last_insert_id()</selectKey>
+        <![CDATA[insert into person(email,id,name,people_id) values(#{email,jdbcType=VARCHAR},#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{peopleId,jdbcType=BIGINT})]]>
+    </insert>
+    <update id="_update" parameterType="com.qianyi.domain.Person" lang="XML">update person
+        <set>
+            email=#{email,jdbcType=VARCHAR},id=#{id,jdbcType=BIGINT},name=#{name,jdbcType=VARCHAR},people_id=#{peopleId,jdbcType=BIGINT}
+        </set>
+        <trim prefix="where" prefixOverrides="and |or ">and id=#{id}</trim>
+    </update>
+    <update id="_updateIgnoreNull" parameterType="com.qianyi.domain.Person" lang="XML">update person
+        <set>
+            <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
+            <if test="id != null">id=#{id,jdbcType=BIGINT},</if>
+            <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+            <if test="peopleId != null">people_id=#{peopleId,jdbcType=BIGINT},</if>
+        </set>
+        <trim prefix="where" prefixOverrides="and |or ">and id=#{id}</trim>
+    </update>
+    <select id="_getById" parameterType="com.qianyi.domain.Person" resultMap="ResultMap" lang="XML">select `person`.id
+        as `id`,`person`.email as `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as `peopleId`
+        from person `person`
+        <trim prefix=" where " prefixOverrides="and |or ">and `person`.id=#{id}</trim>
+    </select>
+    <select id="_findAll" resultMap="ResultMap" lang="XML">select `person`.id as `id`,`person`.email as
+        `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as `peopleId` from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+        <if test="_ids != null">where `person`.id in
+            <foreach item="item" index="index" collection="_ids" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+        <if test="_sorts != null">
+            <bind name="_columnsMap"
+                  value='#{"id":"`person`.id","email":"`person`.email","id":"`person`.id","name":"`person`.name","peopleId":"`person`.people_id"}'/>
+            order by
+            <foreach item="item" index="idx" collection="_sorts" open="" separator="," close=""><if
+                    test="item.ignoreCase">lower(</if>${_columnsMap[item.property]}<if test="item.ignoreCase">)</if> ${item.direction}
+            </foreach>
+        </if>
+    </select>
+    <select id="_findBasicAll" resultMap="ResultMap" lang="XML">select `person`.id as `id`,`person`.email as
+        `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as `peopleId` from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+        <if test="_ids != null">where `person`.id in
+            <foreach item="item" index="index" collection="_ids" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+        <if test="_sorts != null">
+            <bind name="_columnsMap"
+                  value='#{"id":"`person`.id","email":"`person`.email","id":"`person`.id","name":"`person`.name","peopleId":"`person`.people_id"}'/>
+            order by
+            <foreach item="item" index="idx" collection="_sorts" open="" separator="," close=""><if
+                    test="item.ignoreCase">lower(</if>${_columnsMap[item.property]}<if test="item.ignoreCase">)</if> ${item.direction}
+            </foreach>
+        </if>
+    </select>
+    <select id="_count" resultType="long" lang="XML">select count(*) from person `person`</select>
+    <delete id="_deleteById" parameterType="com.qianyi.domain.Person" lang="XML">delete `person` from person `person`
+        <trim prefix=" where " prefixOverrides="and |or ">and id=#{id}</trim>
+    </delete>
+    <delete id="_deleteAll">truncate table person </delete>
+    <select id="_findByPager" resultMap="ResultMap" lang="XML">select `person`.id as `id`,`person`.email as
+        `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as `peopleId` from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+        <if test="_sorts != null">
+            <bind name="_columnsMap"
+                  value='#{"id":"`person`.id","email":"`person`.email","id":"`person`.id","name":"`person`.name","peopleId":"`person`.people_id"}'/>
+            order by
+            <foreach item="item" index="idx" collection="_sorts" open="" separator="," close=""><if
+                    test="item.ignoreCase">lower(</if>${_columnsMap[item.property]}<if test="item.ignoreCase">)</if> ${item.direction}
+            </foreach>
+        </if>
+        limit #{pageSize} offset #{offset}
+    </select>
+    <select id="_findBasicByPager" resultMap="ResultMap" lang="XML">select `person`.id as `id`,`person`.email as
+        `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as `peopleId` from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+        <if test="_sorts != null">
+            <bind name="_columnsMap"
+                  value='#{"id":"`person`.id","email":"`person`.email","id":"`person`.id","name":"`person`.name","peopleId":"`person`.people_id"}'/>
+            order by
+            <foreach item="item" index="idx" collection="_sorts" open="" separator="," close=""><if
+                    test="item.ignoreCase">lower(</if>${_columnsMap[item.property]}<if test="item.ignoreCase">)</if> ${item.direction}
+            </foreach>
+        </if>
+        limit #{pageSize} offset #{offset}
+    </select>
+    <select id="_countByCondition" resultType="long" lang="XML">select count(*) from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+    </select>
+    <select id="_countBasicByCondition" resultType="long" lang="XML">select count(*) from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+    </select>
+    <select id="_getBasicById" parameterType="com.qianyi.domain.Person" resultMap="ResultMap" lang="XML">select
+        `person`.id as `id`,`person`.email as `email`,`person`.id as `id`,`person`.name as `name`,`person`.people_id as
+        `peopleId` from person `person`
+        <trim prefix=" where " prefixOverrides="and |or ">and `person`.id=#{id}</trim>
+    </select>
+    <delete id="_deleteByCondition" lang="XML">delete `person` from person `person`
+        <if test="_condition != null">
+            <trim prefix=" where " prefixOverrides="and |or ">
+                <include refid="SELECT_CONDITION_INNER"/>
+            </trim>
+        </if>
+    </delete>
+</mapper>
