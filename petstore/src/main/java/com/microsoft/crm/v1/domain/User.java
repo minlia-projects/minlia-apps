@@ -4,12 +4,9 @@ package com.microsoft.crm.v1.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.minlia.cloud.entity.AbstractEntity;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -20,7 +17,7 @@ import java.util.*;
 @Table(name = "DS_USER")
 public class User extends AbstractEntity {
 
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private Integer id;
 //    @Condition
@@ -28,7 +25,7 @@ public class User extends AbstractEntity {
     @JsonProperty
     @JSONField
     private String firstname;
-//    @Condition(type = LIKE)
+    //    @Condition(type = LIKE)
     @Column(name = "LASTNAME")
     @JsonProperty
     @JSONField
@@ -39,112 +36,9 @@ public class User extends AbstractEntity {
     @JsonProperty
     @JSONField
     private boolean active;
-
-
-
-
-
-
-    @Temporal(TemporalType.DATE)
-    @JsonProperty
-    private Date date;
-
-
-//    @Temporal(TemporalType.TIME)
-//    @JsonProperty
-//    private Date time;
-
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonProperty
-    private Date timestamp;
-
-    private Long times;
-
-
-
-//    @JsonProperty
-//    private ZonedDateTime zonedDateTime;
-
-
-//    @JsonProperty
-//    private DateTimeZone dateTimeZone;
-
-
-//    @JsonProperty
-//    private DateTime dateTime;
-
-
-
-    @JsonProperty(value = "dateTimeTimestamp")
-    public Long getDateTimeAsJson(){
-        return timestamp.getTime();
-    }
-
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-//    public Date getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(Date time) {
-//        this.time = time;
-//    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-//    public ZonedDateTime getZonedDateTime() {
-//        return zonedDateTime;
-//    }
-//
-//    public void setZonedDateTime(ZonedDateTime zonedDateTime) {
-//        this.zonedDateTime = zonedDateTime;
-//    }
-
-//    public DateTimeZone getDateTimeZone() {
-//        return dateTimeZone;
-//    }
-//
-//    public void setDateTimeZone(DateTimeZone dateTimeZone) {
-//        this.dateTimeZone = dateTimeZone;
-//    }
-//
-//    public DateTime getDateTime() {
-//        return dateTime;
-//    }
-//
-//    public void setDateTime(DateTime dateTime) {
-//        this.dateTime = dateTime;
-//    }
-
     @JsonProperty
     @JSONField
     private Date createdAt;
-
-    @JsonProperty
-    private java.util.Date myDate;
-
-
-    public Date getMyDate() {
-        return myDate;
-    }
-
-    public void setMyDate(Date myDate) {
-        this.myDate = myDate;
-    }
 
     @JsonProperty
     @JSONField

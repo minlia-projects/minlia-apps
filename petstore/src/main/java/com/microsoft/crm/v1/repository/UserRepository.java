@@ -11,7 +11,4 @@ import java.util.List;
  */
 public interface UserRepository extends AbstractRepository<User,Long>{
 
-
-    List<User> findByTimestampLessThan(Date date);
-
 }

@@ -86,7 +86,7 @@ public class UserEndpoint {
         user.setFirstname(name);
         user.setLastname(lastname);
         user.setEmailAddress(name+"@qq.com");
-        user.setMyDate(new Date());
+//        user.setMyDate(new Date());
 
 //        user.setDateTime(DateTime.now());
 //        user.setZonedDateTime(ZonedDateTime.now());
