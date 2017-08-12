@@ -1,5 +1,6 @@
 package com.qianyi.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.minlia.cloud.entity.AbstractAuditingEntity;
 import lombok.Getter;
@@ -64,8 +65,9 @@ public class Person extends AbstractAuditingEntity {
 //    private Category category;
 
 
-    @org.springframework.data.annotation.Transient
     @Transient
+    @org.springframework.data.annotation.Transient
+    @JSONField(serialize = false)
     private List<Person> people;
 
 

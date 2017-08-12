@@ -1,9 +1,10 @@
 package com.qianyi.endpoint;
 
+import com.google.common.collect.Lists;
 import com.minlia.cloud.body.StatefulBody;
 import com.minlia.cloud.body.impl.SuccessResponseBody;
+import com.minlia.cloud.body.query.Order;
 import com.minlia.cloud.body.query.QueryOperator;
-import com.minlia.cloud.data.batis.service.PageModel;
 import com.minlia.cloud.endpoint.AbstractApiEndpoint;
 import com.minlia.cloud.query.specification.batis.BatisSpecifications;
 import com.minlia.cloud.query.specification.batis.QueryCondition;
@@ -20,8 +21,8 @@ import com.qianyi.service.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -54,9 +55,16 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
 
     @PostMapping("daoFind")
     public StatefulBody daoFind(@PageableDefault Pageable pageable, @RequestBody BatisApiSearchRequestBody<PersonSearchRequestBody> body) {
-        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "%x%"));
-        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "%x%"));
+        body.getConditions().add(new QueryCondition("name", QueryOperator.like, "%"));
+//        body.getConditions().add(new QueryCondition("email", QueryOperator.like, "%x%"));
 
+
+
+        Person person=new Person();
+        String name=RandomStringUtils.randomAlphabetic(4);
+        person.setName(name);
+        person.setEmail(name+"@qq.com");
+        personDao.insert(person);
 
 //        Page<Person> page=personDao.findAll(batisSpecifications.buildSpecification(body),pageable);
 
@@ -67,6 +75,8 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
                 QueryCondition.ne("id", 1l));
 //        spec.orAll(orQueryConditions);
 
+        spec.setOrders(Lists.newArrayList(new Order("id", Order.Direction.desc)));
+
 //        Page<Person> list = personDao.findBasicAll();//
 
 //        Person person=personDao.findById(1l);
@@ -75,9 +85,9 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
 //        log.debug("List {}",list);
 
 
-//        pm.setSortDefaultName(Sort.Direction.DESC, DataEntity.F_LASTMODIFIEDDATE);
-//        personQueryService.findPage(pm, SecurityUtil.dataScopeFilter(
-//                SecurityUtil.getCurrentUserId(), "this", ""));
+
+//        PageModel<Person> pm=new PageModel<>(0,10);
+//        PageModel<Person> found1 =  personQueryService.findPageQuery(pm,body.getConditions(),true);
 //        JSON rs = JsonUtil.getInstance().toJsonObject(pm);
 //        return ResultBuilder.buildObject(rs);
 
@@ -89,13 +99,12 @@ public class PersonEndpoint extends AbstractApiEndpoint<PersonService, Person, L
 //        starWebService.getStarWebServiceSoap().setMeterSwitchStatus();
 //        starWebService.getStarWebServiceSoap().GetMeterkWh();
 
+        Page<Person> found =  personQueryService.findBasePage(pageable,spec,false);
 
-        PageModel<Person> found =  personQueryService.findBasePage(new PageModel(),spec,false);
-
-        Person person = new Person();
-        person.setName("Smith");
-        Example<Person> example = Example.of(person);
-        Page<Person> results = personRepository.findAll(example,pageable);
+//        Person person = new Person();
+//        person.setName("Smith");
+//        Example<Person> example = Example.of(person);
+//        Page<Person> results = personRepository.findAll(example,pageable);
 
 
 //        PageModel<Person> personPage = personQueryService.findPageQuery(new PageModel(), Lists.newArrayList(), false);
