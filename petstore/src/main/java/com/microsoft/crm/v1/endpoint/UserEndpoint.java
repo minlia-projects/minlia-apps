@@ -1,26 +1,23 @@
 package com.microsoft.crm.v1.endpoint;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 import com.microsoft.crm.v1.dao.UserDao;
 import com.microsoft.crm.v1.domain.User;
-import com.microsoft.crm.v1.repository.UserRepository;
+import com.microsoft.crm.v1.query.UserQueryRequestBody;
 import com.microsoft.crm.v1.service.UserQueryService;
 import com.minlia.cloud.body.StatefulBody;
 import com.minlia.cloud.body.impl.SuccessResponseBody;
 import com.minlia.cloud.body.query.Order;
 import com.minlia.cloud.body.query.QueryOperator;
-import com.minlia.cloud.query.specification.batis.BatisSpecifications;
 import com.minlia.cloud.query.specification.batis.QueryCondition;
+import com.minlia.cloud.query.specification.batis.QuerySpecifications;
 import com.minlia.cloud.query.specification.batis.SpecificationDetail;
-import com.minlia.cloud.query.specification.batis.body.BatisApiSearchRequestBody;
-import com.qianyi.body.PersonSearchRequestBody;
+import com.minlia.cloud.query.specification.batis.body.ApiQueryRequestBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by will on 8/2/17.
@@ -52,8 +43,8 @@ public class UserEndpoint {
     @Autowired
     UserQueryService userQueryService;
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
 
     @ApiOperation(
             value = "获取一个指定ID的实体",
@@ -62,10 +53,10 @@ public class UserEndpoint {
             produces = "application/json"
     )
     @PostMapping(value = "")
-    public StatefulBody findOne(@PageableDefault Pageable pageable, @RequestBody BatisApiSearchRequestBody<PersonSearchRequestBody> body) {
+    public StatefulBody findOne(@PageableDefault Pageable pageable, @RequestBody ApiQueryRequestBody<UserQueryRequestBody> body) {
 
         body.getConditions().add(new QueryCondition("firstname", QueryOperator.like, "%"));
-        SpecificationDetail<User> spec = BatisSpecifications.bySearchQueryCondition(
+        SpecificationDetail<User> spec = QuerySpecifications.bySearchQueryCondition(
                 body.getConditions(),
 //                QueryCondition.ne(Person.F_STATUS, User.FLAG_DELETE).setAnalytiColumnPrefix("a"),
                 QueryCondition.ne("id", 1l));
@@ -86,6 +77,10 @@ public class UserEndpoint {
         user.setFirstname(name);
         user.setLastname(lastname);
         user.setEmailAddress(name+"@qq.com");
+
+
+
+        user.setDateTime(DateTime.now());
 //        user.setMyDate(new Date());
 
 //        user.setDateTime(DateTime.now());
@@ -95,24 +90,30 @@ public class UserEndpoint {
 
 
 
+        userDao.insert(user);
 
-
-
+         user=new User();
+         name= RandomStringUtils.randomAlphabetic(4);
+         lastname= RandomStringUtils.randomAlphabetic(4);
+        user.setFirstname(name);
+        user.setLastname(lastname);
 
 
         //        user.setTimestamp(new Date());
 //        user.setDate(new Date());
 
-        userDao.insert(user);
+//        userDao.insert(user);
 
 
 //        userRepository.save(user);
 
 
-//        userRepository.findOne(2l);
+//      User us=  userRepository.findOne(2l);
+//        log.debug("userRepository.findOne {}",us);
 
-//        User user1 =userRepository.getOne(1l);
-//        log.debug("userRepository.findOne {}",userRepository);
+        User user1 =userDao.findOne(1l);
+
+        log.debug("userRepository.findOne {}",user1);
 
 //        List<User> users = userRepository.findAll();
 

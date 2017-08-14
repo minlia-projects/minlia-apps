@@ -4,6 +4,8 @@ package com.microsoft.crm.v1.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.minlia.cloud.entity.AbstractEntity;
+import lombok.Data;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
@@ -12,10 +14,17 @@ import java.util.*;
 /**
  * @author Jarvis Song
  */
-
+@Data
 @Entity
 @Table(name = "DS_USER")
 public class User extends AbstractEntity {
+
+
+
+
+
+
+//    private DateTime dateTime;
 
     //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +48,17 @@ public class User extends AbstractEntity {
     @JsonProperty
     @JSONField
     private Date createdAt;
+
+
+
+
+
+
+
+
+
+
+
 
     @JsonProperty
     @JSONField
