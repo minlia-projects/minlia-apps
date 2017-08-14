@@ -80,7 +80,7 @@ public class UserEndpoint {
 
 
 
-        user.setDateTime(DateTime.now());
+//        user.setDateTime(DateTime.now());
 //        user.setMyDate(new Date());
 
 //        user.setDateTime(DateTime.now());
