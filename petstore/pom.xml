@@ -78,7 +78,7 @@
         <dependency>
             <groupId>com.minlia.cloud</groupId>
             <artifactId>minlia-cloud-starter</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
 
 
