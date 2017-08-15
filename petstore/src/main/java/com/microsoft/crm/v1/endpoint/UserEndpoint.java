@@ -52,6 +52,20 @@ public class UserEndpoint {
             httpMethod = "POST",
             produces = "application/json"
     )
+    @PostMapping(value = "findPage")
+    public StatefulBody findPage(@PageableDefault Pageable pageable, @RequestBody ApiQueryRequestBody<UserQueryRequestBody> body) {
+        Page<User> found=userDao.findUseMapper22(pageable);
+        return SuccessResponseBody.builder().payload(found).build();
+    }
+
+
+
+    @ApiOperation(
+            value = "获取一个指定ID的实体",
+            notes = "获取一个指定ID的实体",
+            httpMethod = "POST",
+            produces = "application/json"
+    )
     @PostMapping(value = "")
     public StatefulBody findOne(@PageableDefault Pageable pageable, @RequestBody ApiQueryRequestBody<UserQueryRequestBody> body) {
 

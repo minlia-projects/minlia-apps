@@ -6,6 +6,17 @@ system:
     token: bWlubGlhCg==
     
 spring:
+#    data:
+#        mybatis:
+#            before-mapper-locations:
+#                - classpath:/dao/*DaoCustom.xml
+#            base-packages:
+#                - .**.dao
+#            mapper-locations:
+#                - classpath*:/com/minlia/modules/rbac/dao/*Dao.xml
+#                - classpath*:/**/dao/*Dao.xml
+#                - classpath*:/**/dao/*DaoCustom.xml
+#                - classpath:/dao/*Dao.xml
     profile: dev
     application:
         name: miniapp

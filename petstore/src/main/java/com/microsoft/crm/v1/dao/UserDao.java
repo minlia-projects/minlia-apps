@@ -44,6 +44,9 @@ public interface UserDao extends  BatisDao<User,Long>, UserDaoCustom{
     @Query(value = "findUseMapper",operation = Query.Operation.select_list)
     List<User> findUseMapper1(@Param("lastname") String lastname);
 
+    @Query(value = "findUseMapper22",operation = Query.Operation.page)
+    Page<User> findUseMapper22(Pageable pageable);
+
     User findByEmailAddressAndLastname(String emailAddress, String lastname);
 
     User findByEmailAddress(String emailAddress);
