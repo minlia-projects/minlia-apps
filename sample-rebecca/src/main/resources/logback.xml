@@ -182,6 +182,7 @@
     <logger name="jdbc.sqlonly" level="INFO"/>
     <logger name="org.apache.ibatis" level="DEBUG"/>
     <logger name="org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer" level="ERROR"/>
+    <logger name="org.springframework.core.io.support" level="INFO"/>
 
     <!--<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">-->
     <!--<resetJUL>true</resetJUL>-->
